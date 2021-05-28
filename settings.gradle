@@ -1,0 +1,10 @@
+rootProject.name = "MyPlugin"
+include ':app'
+include ':my-loader'
+include ':my-runtime'
+
+include(":test")
+project(":test").projectDir = file("plugin/test") //声明 module 名并指定路径
+
+include(":sunflower")
+project(":sunflower").projectDir = file("plugin/sunflower") //声明 module 名并指定路径

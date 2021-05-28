@@ -1,0 +1,116 @@
+apply  from: "../shadow.gradle"
+
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+
+android {
+    compileSdkVersion 30
+    buildToolsVersion "30.0.3"
+
+    defaultConfig {
+        applicationId HOST_APP_APPLICATION_ID
+        minSdkVersion 16
+        targetSdkVersion 30
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+    buildFeatures {
+        viewBinding true
+    }
+}
+
+dependencies {
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation 'androidx.core:core-ktx:1.3.1'
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'com.google.android.material:material:1.2.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.1'
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.3.0'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.3.0'
+    testImplementation 'junit:junit:4.+'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+}
+
+apply plugin: 'com.tencent.shadow.plugin'
+
+shadow {
+    packagePlugin {
+        pluginTypes {
+            debug {
+                loaderApkConfig = new Tuple2('my-loader-debug.apk', ':my-loader:assembleDebug')
+                runtimeApkConfig = new Tuple2('my-runtime-debug.apk', ':my-runtime:assembleDebug')
+                pluginApks {
+                    pluginApk1 {
+                        businessName = 'test-debug'
+                        //businessName相同的插件，context获取的Dir是相同的。businessName留空，表示和宿主相同业务，直接使用宿主的Dir。
+                        partKey = 'test'
+                        buildTask = ':test:assembleDebug'
+                        apkName = 'test-debug.apk'
+                        apkPath = '/plugin/test/build/outputs/apk/debug/test-debug.apk'
+                        //hostWhiteList = ["com.tencent.shadow.sample.host.lib"]
+                    }
+
+                    pluginApk2 {
+                        businessName = 'sunflower-debug'
+                        //businessName相同的插件，context获取的Dir是相同的。businessName留空，表示和宿主相同业务，直接使用宿主的Dir。
+                        partKey = 'sunflower'
+                        buildTask = ':sunflower:assembleDebug'
+                        apkName = 'sunflower-debug.apk'
+                        apkPath = '/plugin/sunflower/build/outputs/apk/debug/sunflower-debug.apk'
+                        //hostWhiteList = ["com.tencent.shadow.sample.host.lib"]
+                    }
+                }
+            }
+
+            release {
+                loaderApkConfig = new Tuple2('my-loader-release.apk', ':my-loader:assembleRelease')
+                runtimeApkConfig = new Tuple2('my-runtime-release.apk', ':my-runtime:assembleRelease')
+                pluginApks {
+                    pluginApk1 {
+                        businessName = 'test-release'
+                        partKey = 'test'
+                        buildTask = ':test:assembleRelease'
+                        apkName = 'test-release.apk'
+                        apkPath = '/plugin/test/build/outputs/apk/release/test-release-unsigned.apk'
+                        //hostWhiteList = ["com.tencent.shadow.sample.host.lib"]
+                    }
+
+                    pluginApk2 {
+                        businessName = 'sunflower-release'
+                        partKey = 'sunflower'
+                        buildTask = ':sunflower:assembleRelease'
+                        apkName = 'sunflower-release.apk'
+                        apkPath = '/plugin/sunflower/build/outputs/apk/release/sunflower-release-unsigned.apk'
+                        //hostWhiteList = ["com.tencent.shadow.sample.host.lib"]
+                    }
+                }
+            }
+        }
+
+        loaderApkProjectPath = 'my-loader'
+
+        runtimeApkProjectPath = 'my-runtime'
+
+        version = 1
+        compactVersion = [1, 2, 3]
+        uuidNickName = "0.0.1" //packagePlugin 方法会生成 UUID, 此可认为 UUID 的版本号
+    }
+}
