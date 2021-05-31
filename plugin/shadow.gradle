@@ -1,8 +1,10 @@
-//在此地方使用 shadow gradle 插件会出错
-
-/*
-apply plugin: 'com.android.application'
+/**
+ * 这个在每个插件中必须应用，否则启动组件时不能被 shadow 识别，且必须在 android{} 闭包之后，
+ *   否则插件获取的 compileSdkVersion 会为空
+ **/
 apply plugin: 'com.tencent.shadow.plugin'
+
+apply plugin: 'plugin.test'
 
 shadow {
     packagePlugin {
@@ -66,4 +68,4 @@ shadow {
         compactVersion = [1, 2, 3]
         uuidNickName = "0.0.1" //packagePlugin 方法会生成 UUID, 此可认为 UUID 的版本号
     }
-}*/
+}

@@ -60,15 +60,21 @@ buildscript {
         }
         mavenLocal()
 
-        file(shadow_repository)
-
         if (file(shadow_repository).exists()) {
             maven { url = uri(shadow_repository) }
         }
 
+        maven {
+            url "https://repo.rdc.aliyun.com/repository/39749-release-oGtrdD"
+            credentials {
+                username maven_user
+                password maven_pwd
+            }
+        }
+
     }
     dependencies {
-        classpath "com.android.tools.build:gradle:4.2.1"
+        classpath 'com.android.tools.build:gradle:4.2.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "com.tencent.shadow.core.test:gradle-plugin:$shadow_version"
 
@@ -96,12 +102,17 @@ allprojects {
         }
         mavenLocal()
 
-        file(shadow_repository)
-
         if (file(shadow_repository).exists()) {
             maven { url = uri(shadow_repository) }
         }
 
+        maven {
+            url "https://repo.rdc.aliyun.com/repository/39749-release-oGtrdD"
+            credentials {
+                username maven_user
+                password maven_pwd
+            }
+        }
     }
 }
 

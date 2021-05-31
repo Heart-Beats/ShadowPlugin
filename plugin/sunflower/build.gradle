@@ -1,12 +1,8 @@
-apply from: "../shadow.gradle"
-
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'androidx.navigation.safeargs.kotlin'
-
-apply plugin: 'com.tencent.shadow.plugin' //这个在每个插件中必须应用，否则启动组件时不能被 shadow 识别
 
 android {
     compileSdkVersion 30
@@ -79,3 +75,6 @@ dependencies {
     androidTestImplementation "com.google.truth:truth:$rootProject.truthVersion"
     testImplementation "junit:junit:$rootProject.junitVersion"
 }
+
+
+apply  from: '../shadow.gradle' // shadow plugin 使用需在 android{} 闭包之后
