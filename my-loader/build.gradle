@@ -37,11 +37,11 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'androidx.core:core-ktx:1.3.1'
 
-    implementation "com.tencent.shadow.dynamic.test:loader-impl:$shadow_version"
+    implementation "com.tencent.shadow.dynamic${group_suffix}:loader-impl:$shadow_version"
 
-    compileOnly "com.tencent.shadow.core.test:runtime:$shadow_version"
-    compileOnly "com.tencent.shadow.core.test:activity-container:$shadow_version"
-    compileOnly "com.tencent.shadow.core.test:common:$shadow_version"
+//    compileOnly "com.tencent.shadow.core${group_suffix}:runtime:$shadow_version"
+    compileOnly "com.tencent.shadow.core${group_suffix}:activity-container:$shadow_version"
+    compileOnly "com.tencent.shadow.core${group_suffix}:common:$shadow_version"
     //下面这行依赖是为了防止在proguard的时候找不到LoaderFactory接口
-    compileOnly "com.tencent.shadow.dynamic.test:host:$shadow_version"
+    compileOnly "com.tencent.shadow.dynamic${group_suffix}:host:$shadow_version"
 }
