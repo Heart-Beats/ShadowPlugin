@@ -4,7 +4,7 @@ buildscript {
 
     ext{
         kotlin_version = '1.5.10'
-        shadow_version = 'local-a56889f9-SNAPSHOT'
+        shadow_version = 'local-0b373991-SNAPSHOT'
 
         HOST_APP_APPLICATION_ID = 'com.example.zhanglei.myapplication.test'
         shadow_repository = 'E:\\repository'

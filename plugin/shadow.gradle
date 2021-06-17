@@ -44,7 +44,7 @@ shadow {
                         partKey = 'test'
                         buildTask = ':test:assembleRelease'
                         apkName = 'test-release.apk'
-                        apkPath = '/plugin//test/build/outputs/apk/release/test-release-unsigned.apk'
+                        apkPath = '/plugin/test/build/outputs/apk/release/test-release-unsigned.apk'
                         //hostWhiteList = ["com.tencent.shadow.sample.host.lib"]
                     }
 

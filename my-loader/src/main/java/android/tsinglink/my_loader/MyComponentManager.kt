@@ -22,7 +22,7 @@ class MyComponentManager(private val context: Context) : ComponentManager() {
 	 */
 	override fun onBindContainerActivity(pluginActivity: ComponentName): ComponentName {
 		Log.d(TAG, "onBindContainerActivity: pluginActivity==$pluginActivity")
-		when (pluginActivity.getClassName()) {
+		when (pluginActivity.className) {
 		}
 		return ComponentName(context, Constant.DEFAULT_ACTIVITY)
 	}
