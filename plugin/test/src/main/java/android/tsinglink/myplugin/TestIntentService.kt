@@ -3,6 +3,8 @@ package android.tsinglink.myplugin
 import android.app.IntentService
 import android.content.Context
 import android.content.Intent
+import android.os.Bundle
+import android.os.ResultReceiver
 
 
 private const val ACTION_FOO = "android.tsinglink.myplugin.action.FOO"
@@ -28,8 +30,11 @@ class TestIntentService : IntentService("TestIntentService") {
 	override fun onHandleIntent(intent: Intent?) {
 		when (intent?.action) {
 			ACTION_FOO -> {
+				// Parcelable 类型的数据跨进程传输时，必须重新设置 ClassLoader，这里因为添加了白名单，所以会以宿主的 ClassLoader 加载
+				intent.setExtrasClassLoader(this.classLoader)
+
 				val param1 = intent.getStringExtra(EXTRA_PARAM1)
-				val param2 = intent.getStringExtra(EXTRA_PARAM2)
+				val param2: ResultReceiver? = intent.getParcelableExtra(EXTRA_PARAM2)
 				handleActionFoo(param1, param2)
 			}
 			ACTION_BAZ -> {
@@ -41,8 +46,12 @@ class TestIntentService : IntentService("TestIntentService") {
 	}
 
 
-	private fun handleActionFoo(param1: String?, param2: String?) {
-		println("handleActionFoo------------> param1 = [${param1}], param2 = [${param2}]")
+	private fun handleActionFoo(param1: String?, resultReceiver: ResultReceiver?) {
+		println("handleActionFoo------------> param1 = [${param1}], param2 = [${resultReceiver}]")
+
+		resultReceiver?.send(0, Bundle().apply {
+			this.putString(param1, param1)
+		})
 	}
 
 

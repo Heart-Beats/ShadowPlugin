@@ -21,6 +21,7 @@ shadow {
                         apkName = 'test-debug.apk'
                         apkPath = '/plugin/test/build/outputs/apk/debug/test-debug.apk'
                         //hostWhiteList = ["com.tencent.shadow.sample.host.lib"]
+                        hostWhiteList = ["com.example.zhanglei.myapplication.fragments"]
                     }
 
                     pluginApk2 {
