@@ -8,4 +8,4 @@ project(":test").projectDir = file("plugin/test") //声明 module 名并指定�
 
 include(":sunflower")
 project(":sunflower").projectDir = file("plugin/sunflower") //声明 module 名并指定路径
-include ':buildsrc'
+include ':plugin-lib'

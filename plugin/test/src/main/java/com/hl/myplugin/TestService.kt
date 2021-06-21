@@ -1,15 +1,21 @@
-package android.tsinglink.myplugin
+package com.hl.myplugin
 
 import android.app.Service
 import android.content.Intent
+import android.os.Bundle
 import android.os.IBinder
 import android.util.Log
+import com.hl.pluginlib.Person
+import com.hl.pluginlib.PluginAidlInterface
+import com.hl.pluginlib.PluginAidlListener
 
 class TestService : Service() {
 
 	private companion object {
 		private const val TAG = "TestService"
 	}
+
+	private var pluginAidlListener: PluginAidlListener? = null
 
 	/**
 	 * 1.如果 service 没被创建过，调用 startService() 后会执行 onCreate() 回调；
@@ -25,7 +31,29 @@ class TestService : Service() {
 	 */
 	override fun onBind(intent: Intent): IBinder? {
 		Log.d(TAG, "onBind: 传输数据== ${intent.getStringExtra("测试数据")}")
-		return null
+		return object : PluginAidlInterface.Stub() {
+
+			override fun openActivity(activityClassName: String, extras: Bundle?) {
+				serviceOpenActivity(activityClassName, extras)
+				pluginAidlListener?.onOpenActivity(true, activityClassName)
+			}
+
+			override fun setPluginListener(PluginAidlListener: PluginAidlListener?) {
+				serviceSetPluginListener(PluginAidlListener)
+
+				pluginAidlListener?.onTransPerson(Person("测试AIDL", 0, "未知"))
+			}
+		}
+	}
+
+	private fun serviceSetPluginListener(pluginAidlListener: PluginAidlListener?) {
+		this.pluginAidlListener = pluginAidlListener
+	}
+
+	private fun serviceOpenActivity(activity: String, extras: Bundle?) {
+		this.startActivity(Intent(activity).also {
+			it.replaceExtras(extras)
+		})
 	}
 
 	override fun onUnbind(intent: Intent?): Boolean {

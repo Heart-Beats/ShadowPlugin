@@ -1,4 +1,4 @@
-package android.tsinglink.my_runtime;
+package com.hl.my_runtime;
 
 
 import com.tencent.shadow.core.runtime.container.PluginContainerActivity;

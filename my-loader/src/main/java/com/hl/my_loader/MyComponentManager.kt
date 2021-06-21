@@ -1,4 +1,4 @@
-package android.tsinglink.my_loader
+package com.hl.my_loader
 
 import android.content.ComponentName
 import android.content.Context

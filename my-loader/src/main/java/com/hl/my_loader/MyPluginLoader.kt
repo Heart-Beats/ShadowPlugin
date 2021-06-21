@@ -1,7 +1,7 @@
 package com.hl.my_loader.loader
 
 import android.content.Context
-import android.tsinglink.my_loader.MyComponentManager
+import com.hl.my_loader.MyComponentManager
 import com.tencent.shadow.core.loader.ShadowPluginLoader
 import com.tencent.shadow.core.loader.managers.ComponentManager
 

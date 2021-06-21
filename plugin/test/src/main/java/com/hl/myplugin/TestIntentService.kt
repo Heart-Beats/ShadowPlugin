@@ -1,4 +1,4 @@
-package android.tsinglink.myplugin
+package com.hl.myplugin
 
 import android.app.IntentService
 import android.content.Context
@@ -7,11 +7,11 @@ import android.os.Bundle
 import android.os.ResultReceiver
 
 
-private const val ACTION_FOO = "android.tsinglink.myplugin.action.FOO"
-private const val ACTION_BAZ = "android.tsinglink.myplugin.action.BAZ"
+private const val ACTION_FOO = "com.hl.myplugin.action.FOO"
+private const val ACTION_BAZ = "com.hl.myplugin.action.BAZ"
 
-private const val EXTRA_PARAM1 = "android.tsinglink.myplugin.extra.PARAM1"
-private const val EXTRA_PARAM2 = "android.tsinglink.myplugin.extra.PARAM2"
+private const val EXTRA_PARAM1 = "com.hl.myplugin.extra.PARAM1"
+private const val EXTRA_PARAM2 = "com.hl.myplugin.extra.PARAM2"
 
 
 /**

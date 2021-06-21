@@ -1,4 +1,4 @@
-package android.tsinglink.myplugin
+package com.hl.myplugin
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
-import android.tsinglink.myplugin.databinding.FragmentFirstBinding
+import com.hl.myplugin.databinding.FragmentFirstBinding
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.

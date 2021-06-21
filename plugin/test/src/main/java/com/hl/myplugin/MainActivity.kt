@@ -1,7 +1,8 @@
-package android.tsinglink.myplugin
+package com.hl.myplugin
 
+import com.hl.myplugin.R
 import android.os.Bundle
-import android.tsinglink.myplugin.databinding.ActivityMainBinding
+import com.hl.myplugin.databinding.ActivityMainBinding
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
