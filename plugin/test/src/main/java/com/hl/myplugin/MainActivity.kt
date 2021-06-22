@@ -1,8 +1,6 @@
 package com.hl.myplugin
 
-import com.hl.myplugin.R
 import android.os.Bundle
-import com.hl.myplugin.databinding.ActivityMainBinding
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
@@ -11,6 +9,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.google.android.material.snackbar.Snackbar
+import com.hl.myplugin.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 

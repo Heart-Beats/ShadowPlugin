@@ -51,7 +51,9 @@ class TestService : Service() {
 	}
 
 	private fun serviceOpenActivity(activity: String, extras: Bundle?) {
-		this.startActivity(Intent(activity).also {
+		this.startActivity(Intent(this, Class.forName(activity)).also {
+			it.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+			println("设置 Flags ------------------------- Intent.FLAG_ACTIVITY_NEW_TASK")
 			it.replaceExtras(extras)
 		})
 	}
