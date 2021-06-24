@@ -1,7 +1,8 @@
-package com.hl.pluginlib
+package com.hl.pluginaidl
 
 import android.os.Parcel
 import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
 
 /**
  * @author  张磊  on  2021/06/21 at 15:22

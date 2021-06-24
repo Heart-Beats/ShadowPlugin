@@ -5,9 +5,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.IBinder
 import android.util.Log
-import com.hl.pluginlib.Person
-import com.hl.pluginlib.PluginAidlInterface
-import com.hl.pluginlib.PluginAidlListener
+import com.hl.pluginaidl.Person
+import com.hl.pluginaidl.PluginAidlInterface
+import com.hl.pluginaidl.PluginAidlListener
 
 class TestService : Service() {
 
@@ -29,7 +29,7 @@ class TestService : Service() {
 	/**
 	 * onBind() 方法是抽象方法，Service 类本身就是抽象类，因此 onBind() 方法必须重写，即使用不到。
 	 */
-	override fun onBind(intent: Intent): IBinder? {
+	override fun onBind(intent: Intent): IBinder {
 		Log.d(TAG, "onBind: 传输数据== ${intent.getStringExtra("测试数据")}")
 		return object : PluginAidlInterface.Stub() {
 
