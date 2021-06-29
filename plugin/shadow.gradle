@@ -6,6 +6,65 @@ apply plugin: 'com.tencent.shadow.plugin'
 
 apply plugin: 'plugin.test'
 
+static String getSelectVariant(Project project) {
+    def rootDirPath = project.rootDir.path
+    def projectDirPath = project.projectDir.path
+    def moduleRelativePathForRootProject = project.rootProject.relativePath(projectDirPath)
+    def pathSeparator = File.separator
+
+    /*
+    * 构建 project 相关的配置路径：
+    * 如 {rootProjectPath}\.idea\modules\{project 在 rootProject 中的相对路径}\{rootProjectName}.{project.name}.iml
+    */
+    def parseModuleXmlPath = "${rootDirPath}${pathSeparator}.idea${pathSeparator}modules" +
+            "${pathSeparator}${moduleRelativePathForRootProject}${pathSeparator}${project.rootProject.name}.${project.name}.iml"
+
+    println "parseModuleXmlPath ------------------> ${parseModuleXmlPath}"
+
+    def module = new XmlSlurper().parse(parseModuleXmlPath)
+
+    // 解析 project 配置相关的 XMl，找到对应的属性（SELECTED_BUILD_VARIANT）
+    return module.component.facet.configuration.option.find { node ->
+        if (node.@name == "SELECTED_BUILD_VARIANT") {
+            return true
+        }
+    }.@value
+}
+
+def setShadowPluginApk = { pluginApksOwner, pluginProject, isDebug ->
+    def selectVariant = getSelectVariant(pluginProject)
+
+    // 用来区分是否编译 Debug 版本插件
+    def flavorSuffix = isDebug ? 'Debug' : 'Release'
+
+    def pluginSelectFlavor = selectVariant
+    if (selectVariant.contains('Debug')) {
+        pluginSelectFlavor = selectVariant.split('Debug').first()
+    } else if (selectVariant.contains('Release')) {
+        pluginSelectFlavor = selectVariant.split('Release').first()
+    }
+
+    def buildType = flavorSuffix.toLowerCase()
+
+    pluginApksOwner.businessName = "${pluginProject.name}-${buildType}"
+    //businessName相同的插件，context获取的Dir是相同的。businessName留空，表示和宿主相同业务，直接使用宿主的Dir。
+    pluginApksOwner.partKey = pluginProject.name
+
+    def moduleRelativePathForRootProject = project.rootProject.relativePath(pluginProject.projectDir.path)
+
+    if (pluginSelectFlavor == buildType) {
+        // flavor 仅仅为 debug 或 release 时的配置
+        pluginApksOwner.buildTask = "${pluginProject.path}:assemble${flavorSuffix}"
+        pluginApksOwner.apkName = "${pluginProject.name}-${buildType}.apk"
+        pluginApksOwner.apkPath = "${moduleRelativePathForRootProject}/build/outputs/apk/${buildType}/${pluginApksOwner.apkName}"
+    } else {
+        // 有自定义 flavor 时的配置
+        pluginApksOwner.buildTask = "${pluginProject.path}:assemble${selectVariant}"
+        pluginApksOwner.apkName = "${pluginProject.name}-${pluginSelectFlavor}-${buildType}.apk"
+        pluginApksOwner.apkPath = "${moduleRelativePathForRootProject}/build/outputs/apk/${pluginSelectFlavor}/${buildType}/${pluginApksOwner.apkName}"
+    }
+}
+
 shadow {
     packagePlugin {
         pluginTypes {
@@ -14,23 +73,13 @@ shadow {
                 runtimeApkConfig = new Tuple2('my-runtime-debug.apk', ':my-runtime:assembleDebug')
                 pluginApks {
                     pluginApk1 {
-                        businessName = 'test-debug'
-                        //businessName相同的插件，context获取的Dir是相同的。businessName留空，表示和宿主相同业务，直接使用宿主的Dir。
-                        partKey = 'test'
-                        buildTask = ':test:assembleDebug'
-                        apkName = 'test-debug.apk'
-                        apkPath = '/plugin/test/build/outputs/apk/debug/test-debug.apk'
+                        setShadowPluginApk(owner, project(':test'), true)
                         //hostWhiteList = ["com.tencent.shadow.sample.host.lib"]
                         hostWhiteList = ["com.example.zhanglei.myapplication.fragments"]
                     }
 
                     pluginApk2 {
-                        businessName = 'sunflower-debug'
-                        //businessName相同的插件，context获取的Dir是相同的。businessName留空，表示和宿主相同业务，直接使用宿主的Dir。
-                        partKey = 'sunflower'
-                        buildTask = ':sunflower:assembleDebug'
-                        apkName = 'sunflower-debug.apk'
-                        apkPath = '/plugin/sunflower/build/outputs/apk/debug/sunflower-debug.apk'
+                        setShadowPluginApk(owner, project(':sunflower'), true)
                         //hostWhiteList = ["com.tencent.shadow.sample.host.lib"]
                     }
                 }
@@ -41,20 +90,12 @@ shadow {
                 runtimeApkConfig = new Tuple2('my-runtime-release.apk', ':my-runtime:assembleRelease')
                 pluginApks {
                     pluginApk1 {
-                        businessName = 'test-release'
-                        partKey = 'test'
-                        buildTask = ':test:assembleRelease'
-                        apkName = 'test-release.apk'
-                        apkPath = '/plugin/test/build/outputs/apk/release/test-release-unsigned.apk'
+                        setShadowPluginApk(owner, project(':test'), false)
                         //hostWhiteList = ["com.tencent.shadow.sample.host.lib"]
                     }
 
                     pluginApk2 {
-                        businessName = 'sunflower-release'
-                        partKey = 'sunflower'
-                        buildTask = ':sunflower:assembleRelease'
-                        apkName = 'sunflower-release.apk'
-                        apkPath = '/plugin/sunflower/build/outputs/apk/release/sunflower-release-unsigned.apk'
+                        setShadowPluginApk(owner, project(':sunflower'), false)
                         //hostWhiteList = ["com.tencent.shadow.sample.host.lib"]
                     }
                 }
@@ -62,7 +103,6 @@ shadow {
         }
 
         loaderApkProjectPath = 'my-loader'
-
         runtimeApkProjectPath = 'my-runtime'
 
         version = 1
