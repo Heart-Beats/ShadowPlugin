@@ -46,8 +46,10 @@ def setShadowPluginApk = { pluginApksOwner, pluginProject, isDebug ->
 
     def buildType = flavorSuffix.toLowerCase()
 
-    pluginApksOwner.businessName = "${pluginProject.name}-${buildType}"
     //businessName相同的插件，context获取的Dir是相同的。businessName留空，表示和宿主相同业务，直接使用宿主的Dir。
+    pluginApksOwner.businessName = "${pluginProject.name}-${buildType}"
+
+    // 插件的唯一标识，一个 partKey 需要对应一个唯一的插件
     pluginApksOwner.partKey = pluginProject.name
 
     def moduleRelativePathForRootProject = project.rootProject.relativePath(pluginProject.projectDir.path)
@@ -104,6 +106,10 @@ shadow {
 
         loaderApkProjectPath = 'my-loader'
         runtimeApkProjectPath = 'my-runtime'
+
+        archiveSuffix = System.getenv("PluginSuffix") ?: ""
+        archivePrefix = 'plugin'
+        destinationDir = "${getRootProject().getBuildDir()}"
 
         version = 1
         compactVersion = [1, 2, 3]

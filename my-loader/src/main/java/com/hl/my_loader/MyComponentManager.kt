@@ -15,10 +15,10 @@ class MyComponentManager(private val context: Context) : ComponentManager() {
 	}
 
 	/**
-	 * 配置插件Activity 到 壳子Activity的对应关系
+	 * 配置插件 Activity 到代理壳子 Activity 的对应关系
 	 *
-	 * @param pluginActivity 插件Activity
-	 * @return 壳子Activity
+	 * @param pluginActivity 插件 Activity
+	 * @return 代理壳子 Activity
 	 */
 	override fun onBindContainerActivity(pluginActivity: ComponentName): ComponentName {
 		Log.d(TAG, "onBindContainerActivity: pluginActivity==$pluginActivity")
@@ -28,7 +28,7 @@ class MyComponentManager(private val context: Context) : ComponentManager() {
 	}
 
 	/**
-	 * 配置对应宿主中预注册的壳子contentProvider的信息
+	 * 配置对应宿主中预注册的代理壳子 ContentProvider 的信息
 	 */
 	override fun onBindContainerContentProvider(pluginContentProvider: ComponentName): ContainerProviderInfo {
 		Log.d(TAG, "onBindContainerContentProvider: pluginContentProvider == $pluginContentProvider")
@@ -38,6 +38,9 @@ class MyComponentManager(private val context: Context) : ComponentManager() {
 		)
 	}
 
+	/**
+	 * 配置宿主中预注册的壳子 Broadcast 信息，随后会在插件中找到相应的 Receiver 动态注册
+	 */
 	override fun getBroadcastInfoList(partKey: String): List<BroadcastInfo> {
 		Log.d(TAG, "getBroadcastInfoList: partKey==$partKey")
 
