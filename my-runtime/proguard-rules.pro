@@ -19,3 +19,10 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+-keep class org.slf4j.**{*;}
+-dontwarn org.slf4j.impl.**
+
+-keep class com.tencent.shadow.core.runtime.**{*;}
+
+-keep class * extends com.tencent.shadow.core.runtime.container.PluginContainerActivity

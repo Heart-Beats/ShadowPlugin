@@ -19,25 +19,37 @@ static String getSelectVariant(Project project) {
     def parseModuleXmlPath = "${rootDirPath}${pathSeparator}.idea${pathSeparator}modules" +
             "${pathSeparator}${moduleRelativePathForRootProject}${pathSeparator}${project.rootProject.name}.${project.name}.iml"
 
-    println "parseModuleXmlPath ------------------> ${parseModuleXmlPath}"
+    def selectVariant = ""
+    if (new File(parseModuleXmlPath).exists()) {
+        def module = new XmlSlurper().parse(parseModuleXmlPath)
 
-    def module = new XmlSlurper().parse(parseModuleXmlPath)
+        // 解析 project 配置相关的 XMl，找到对应的属性（SELECTED_BUILD_VARIANT）
+        selectVariant = module.component.facet.configuration.option.find { node ->
+            if (node.@name == "SELECTED_BUILD_VARIANT") {
+                return true
+            }
+        }.@value
+    } else {
+        println "项目初始化，当前配置阶段无法获取选择的 Variant"
+    }
 
-    // 解析 project 配置相关的 XMl，找到对应的属性（SELECTED_BUILD_VARIANT）
-    return module.component.facet.configuration.option.find { node ->
-        if (node.@name == "SELECTED_BUILD_VARIANT") {
-            return true
-        }
-    }.@value
+    println "[project: ${project.name}] 选择的 Variant --------- $selectVariant"
+    return selectVariant
 }
 
 def setShadowPluginApk = { pluginApksOwner, pluginProject, isDebug ->
     def selectVariant = getSelectVariant(pluginProject)
 
+    // 未找到选择的 Variant，停止后续操作
+    if (!selectVariant) {
+       return
+    }
+
     // 用来区分是否编译 Debug 版本插件
     def flavorSuffix = isDebug ? 'Debug' : 'Release'
 
     def pluginSelectFlavor = selectVariant
+
     if (selectVariant.contains('Debug')) {
         pluginSelectFlavor = selectVariant.split('Debug').first()
     } else if (selectVariant.contains('Release')) {
@@ -46,15 +58,13 @@ def setShadowPluginApk = { pluginApksOwner, pluginProject, isDebug ->
 
     def buildType = flavorSuffix.toLowerCase()
 
-    //businessName相同的插件，context获取的Dir是相同的。businessName留空，表示和宿主相同业务，直接使用宿主的Dir。
     pluginApksOwner.businessName = "${pluginProject.name}-${buildType}"
-
-    // 插件的唯一标识，一个 partKey 需要对应一个唯一的插件
+    //businessName相同的插件，context获取的Dir是相同的。businessName留空，表示和宿主相同业务，直接使用宿主的Dir。
     pluginApksOwner.partKey = pluginProject.name
 
     def moduleRelativePathForRootProject = project.rootProject.relativePath(pluginProject.projectDir.path)
 
-    if (pluginSelectFlavor == buildType) {
+    if (pluginSelectFlavor.toLowerCase() == buildType) {
         // flavor 仅仅为 debug 或 release 时的配置
         pluginApksOwner.buildTask = "${pluginProject.path}:assemble${flavorSuffix}"
         pluginApksOwner.apkName = "${pluginProject.name}-${buildType}.apk"

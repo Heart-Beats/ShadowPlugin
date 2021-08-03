@@ -3,7 +3,7 @@ buildscript {
 
     ext {
         kotlin_version = '1.5.20'
-        shadow_version = 'local-0b373991-SNAPSHOT'
+        shadow_version = 'local-89a753c5-SNAPSHOT'
 
         HOST_APP_APPLICATION_ID = 'com.example.zhanglei.myapplication.test'
         shadow_repository = 'E:\\repository'
@@ -86,7 +86,7 @@ buildscript {
         myRepositories(owner)
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.2.2'
+        classpath 'com.android.tools.build:gradle:7.0.0'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "com.tencent.shadow.core${group_suffix}:gradle-plugin:$shadow_version"
 
