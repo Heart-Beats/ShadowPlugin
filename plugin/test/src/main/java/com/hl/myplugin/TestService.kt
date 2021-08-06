@@ -63,11 +63,6 @@ class TestService : Service() {
 		return super.onUnbind(intent)
 	}
 
-	override fun onStart(intent: Intent?, startId: Int) {
-		Log.d(TAG, "onStart: 传输数据== ${intent?.getStringExtra("测试数据")}, startId == $startId")
-		super.onStart(intent, startId)
-	}
-
 	/**
 	 *  使用 Context 的 startService() 方法启动 Service 时，该方法就会得到调用。
 	 *      onStartCommand()方法很重要，可以在该方法中根据传入的Intent参数进行实际的操作，比如创建一个线程用于下载数据或播放音乐等
@@ -102,8 +97,8 @@ class TestService : Service() {
 	 *
 	 *  2. 通过 bindService 启动的 Service：
 	 *
-	 *      特点：①. 启动的服务和调用者之间是典型的 client-server 模式，调用者是 client，Service 则是 server 端。
-	 *              Service 只有一个，但绑定到 Service 上面的 client 可以有多个。这里所的 client 指的是组件，比如某个 Activity。
+		 *      特点：①. 启动的服务和调用者之间是典型的 client-server 模式，调用者是 client，Service 则是 server 端。
+		 *              Service 只有一个，但绑定到 Service 上面的 client 可以有多个。这里所的 client 指的是组件，比如某个 Activity。
 	 *
 	 *           ②. client 可以通过 IBinder 接口获取 Service 实例，从而实现在 client 端直接调用 Service 中的方法以实现灵活交互，
 	 *              通过 startService 方法启动是无法实现该效果的。

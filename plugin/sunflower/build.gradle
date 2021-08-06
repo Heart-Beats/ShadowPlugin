@@ -5,7 +5,7 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'androidx.navigation.safeargs.kotlin'
 
 android {
-    compileSdkVersion 30
+    compileSdk 30
     defaultConfig {
         applicationId HOST_APP_APPLICATION_ID
         minSdkVersion 21

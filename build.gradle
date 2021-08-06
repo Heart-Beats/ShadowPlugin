@@ -2,7 +2,7 @@ buildscript {
     def needCustom = false
 
     ext {
-        kotlin_version = '1.5.20'
+        kotlin_version = '1.5.21'
         shadow_version = 'local-89a753c5-SNAPSHOT'
 
         HOST_APP_APPLICATION_ID = 'com.example.zhanglei.myapplication.test'
