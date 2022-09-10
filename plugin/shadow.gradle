@@ -71,7 +71,11 @@ def setShadowPluginApk = { pluginApksOwner, pluginProject, isDebug ->
         pluginApksOwner.apkPath = "${moduleRelativePathForRootProject}/build/outputs/apk/${buildType}/${pluginApksOwner.apkName}"
     } else {
         // 有自定义 flavor 时的配置
-        pluginApksOwner.buildTask = "${pluginProject.path}:assemble${selectVariant}"
+        def firstChar = pluginSelectFlavor.charAt(0)
+        def firstCharUp = firstChar.toUpperCase()
+        def buildTaskName = "${pluginSelectFlavor.replace(firstChar, firstCharUp)}${flavorSuffix}"
+
+        pluginApksOwner.buildTask = "${pluginProject.path}:assemble${buildTaskName}"
         pluginApksOwner.apkName = "${pluginProject.name}-${pluginSelectFlavor}-${buildType}.apk"
         pluginApksOwner.apkPath = "${moduleRelativePathForRootProject}/build/outputs/apk/${pluginSelectFlavor}/${buildType}/${pluginApksOwner.apkName}"
     }
@@ -87,7 +91,7 @@ shadow {
                     pluginApk1 {
                         setShadowPluginApk(owner, project(':test'), true)
                         //hostWhiteList = ["com.tencent.shadow.sample.host.lib"]
-                        hostWhiteList = ["com.example.zhanglei.myapplication.fragments"]
+                        //hostWhiteList = ["com.example.zhanglei.myapplication.fragments"]
                     }
 
                     pluginApk2 {
