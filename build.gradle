@@ -3,8 +3,8 @@ buildscript {
 
     ext {
         kotlin_version = '1.5.21'
-//        shadow_version = 'local-89a753c5-SNAPSHOT'
-        shadow_version = '2.2.1'
+        shadow_version = 'local-89a753c5-SNAPSHOT'
+//        shadow_version = '2.2.1'
 
         HOST_APP_APPLICATION_ID = 'com.hl.baseproject.demo'
         shadow_repository = 'E:\\repository'

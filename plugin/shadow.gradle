@@ -4,7 +4,7 @@
  **/
 apply plugin: 'com.tencent.shadow.plugin'
 
-apply plugin: 'plugin.test'
+//apply plugin: 'plugin.test'
 
 static String getSelectVariant(Project project) {
     def rootDirPath = project.rootDir.path
@@ -38,11 +38,13 @@ static String getSelectVariant(Project project) {
 }
 
 def setShadowPluginApk = { pluginApksOwner, pluginProject, isDebug ->
+    println "[project: ${pluginProject.name}],    isDebug == ${isDebug}"
+
     def selectVariant = getSelectVariant(pluginProject)
 
     // 未找到选择的 Variant，停止后续操作
     if (!selectVariant) {
-       return
+        return
     }
 
     // 用来区分是否编译 Debug 版本插件
@@ -56,6 +58,8 @@ def setShadowPluginApk = { pluginApksOwner, pluginProject, isDebug ->
         pluginSelectFlavor = selectVariant.split('Release').first()
     }
 
+    println "[project: ${pluginProject.name}] pluginSelectFlavor ------------------>  ${pluginSelectFlavor}"
+
     def buildType = flavorSuffix.toLowerCase()
 
     pluginApksOwner.businessName = "${pluginProject.name}-${buildType}"
@@ -64,16 +68,21 @@ def setShadowPluginApk = { pluginApksOwner, pluginProject, isDebug ->
 
     def moduleRelativePathForRootProject = project.rootProject.relativePath(pluginProject.projectDir.path)
 
-    if (pluginSelectFlavor.toLowerCase() == buildType) {
+    if (pluginSelectFlavor.toLowerCase() == 'debug' || pluginSelectFlavor.toLowerCase() == 'release') {
         // flavor 仅仅为 debug 或 release 时的配置
+
+        println "[project: ${pluginProject.name}] 开始默认编译的配置 -----------> buildTaskName == assemble${flavorSuffix}"
+
         pluginApksOwner.buildTask = "${pluginProject.path}:assemble${flavorSuffix}"
         pluginApksOwner.apkName = "${pluginProject.name}-${buildType}.apk"
         pluginApksOwner.apkPath = "${moduleRelativePathForRootProject}/build/outputs/apk/${buildType}/${pluginApksOwner.apkName}"
-    } else {
+    } else if (pluginSelectFlavor != selectVariant) {
         // 有自定义 flavor 时的配置
         def firstChar = pluginSelectFlavor.charAt(0)
         def firstCharUp = firstChar.toUpperCase()
         def buildTaskName = "${pluginSelectFlavor.replace(firstChar, firstCharUp)}${flavorSuffix}"
+
+        println "[project: ${pluginProject.name}] 开始自定义 flavor 的配置 -----------> buildTaskName == assemble${buildTaskName}"
 
         pluginApksOwner.buildTask = "${pluginProject.path}:assemble${buildTaskName}"
         pluginApksOwner.apkName = "${pluginProject.name}-${pluginSelectFlavor}-${buildType}.apk"
