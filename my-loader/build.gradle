@@ -17,7 +17,7 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         // 在 buildConfig 中生成宿主的包名
-        buildConfigField('String', 'HOST_APP_APPLICATION_ID', "\"${HOST_APP_APPLICATION_ID}\"")
+        // buildConfigField('String', 'HOST_APP_APPLICATION_ID', "\"${HOST_APP_APPLICATION_ID}\"")
     }
 
     buildTypes {

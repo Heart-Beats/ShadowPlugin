@@ -1,7 +1,5 @@
 package com.hl.my_loader.loader
 
-import com.hl.my_loader.BuildConfig
-
 /**
  * @Author  张磊  on  2021/04/09 at 10:21
  * Email: 913305160@qq.com
@@ -15,5 +13,5 @@ object Constant {
     const val SINGLE_TASK_ACTIVITY = "com.hl.my_runtime.PluginSingleTaskProxyActivity"
 
 
-    const val PLUGIN_PROVIDER_AUTHORITY = "${BuildConfig.HOST_APP_APPLICATION_ID}.contentprovider.authority.dynamic"
+    // const val PLUGIN_PROVIDER_AUTHORITY = "${BuildConfig.HOST_APP_APPLICATION_ID}.contentprovider.authority.dynamic"
 }

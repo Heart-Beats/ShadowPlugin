@@ -1,12 +1,14 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 
+apply  from: '../shadow.gradle' // 配置 plugin flavor 后 shadow plugin 使用需在 android{} 闭包之前
+
 android {
     compileSdk 30
     buildToolsVersion "30.0.3"
 
     defaultConfig {
-        applicationId HOST_APP_APPLICATION_ID
+        applicationId 'com.hl.test'
         minSdkVersion 16
         targetSdkVersion 30
         versionCode 1
@@ -34,6 +36,13 @@ android {
     buildFeatures {
         viewBinding true
     }
+
+    // 将插件 applicationId 设置为和宿主相同
+    productFlavors {
+        plugin {
+            applicationId HOST_APP_APPLICATION_ID
+        }
+    }
 }
 
 dependencies {
@@ -54,7 +63,5 @@ dependencies {
 
     //Shadow Transform后业务代码会有一部分实际引用runtime中的类
     //如果不以compileOnly方式依赖，会导致其他Transform或者Proguard找不到这些类
-    compileOnly "com.tencent.shadow.core${group_suffix}:runtime:$shadow_version"
+    pluginCompileOnly "com.tencent.shadow.core${group_suffix}:runtime:$shadow_version"
 }
-
-apply  from: '../shadow.gradle' // shadow plugin 使用需在 android{} 闭包之后

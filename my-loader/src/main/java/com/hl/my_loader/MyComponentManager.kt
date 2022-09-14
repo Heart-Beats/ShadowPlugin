@@ -34,25 +34,25 @@ class MyComponentManager(private val context: Context) : ComponentManager() {
 		Log.d(TAG, "onBindContainerContentProvider: pluginContentProvider == $pluginContentProvider")
 		return ContainerProviderInfo(
 			PluginContainerContentProvider::class.java.name,
-			Constant.PLUGIN_PROVIDER_AUTHORITY
+			context.getPackageName() + ".contentprovider.authority.dynamic"
 		)
 	}
 
 	/**
 	 * 配置宿主中预注册的壳子 Broadcast 信息，随后会在插件中找到相应的 Receiver 动态注册
 	 */
-	override fun getBroadcastInfoList(partKey: String): List<BroadcastInfo> {
-		Log.d(TAG, "getBroadcastInfoList: partKey==$partKey")
-
-		//如果有静态广播需要像下面代码这样注册
-		//        if (partKey.equals(Constant.PART_KEY_PLUGIN_MAIN_APP)) {
-		//            broadcastInfos.add(
-		//                    new ComponentManager.BroadcastInfo(
-		//                            "com.tencent.shadow.demo.usecases.receiver.MyReceiver",
-		//                            new String[]{"com.tencent.test.action"}
-		//                    )
-		//            );
-		//        }
-		return ArrayList()
-	}
+	// override fun getBroadcastInfoList(partKey: String): List<BroadcastInfo> {
+	// 	Log.d(TAG, "getBroadcastInfoList: partKey==$partKey")
+	//
+	// 	//如果有静态广播需要像下面代码这样注册
+	// 	//        if (partKey.equals(Constant.PART_KEY_PLUGIN_MAIN_APP)) {
+	// 	//            broadcastInfos.add(
+	// 	//                    new ComponentManager.BroadcastInfo(
+	// 	//                            "com.tencent.shadow.demo.usecases.receiver.MyReceiver",
+	// 	//                            new String[]{"com.tencent.test.action"}
+	// 	//                    )
+	// 	//            );
+	// 	//        }
+	// 	return ArrayList()
+	// }
 }

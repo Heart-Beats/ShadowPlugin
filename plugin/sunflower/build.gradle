@@ -4,10 +4,12 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'androidx.navigation.safeargs.kotlin'
 
+apply  from: '../shadow.gradle' // 配置 plugin flavor 后 shadow plugin 使用需在 android{} 闭包之前
+
 android {
     compileSdk 30
     defaultConfig {
-        applicationId HOST_APP_APPLICATION_ID
+        applicationId 'com.google.samples.apps.sunflower'
         minSdkVersion 21
         targetSdkVersion 30
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -36,13 +38,16 @@ android {
     buildFeatures{
         dataBinding true
     }
+
+    // 将插件 applicationId 设置为和宿主相同
+    productFlavors {
+        plugin {
+            applicationId HOST_APP_APPLICATION_ID
+        }
+    }
 }
 
 dependencies {
-    //Shadow Transform后业务代码会有一部分实际引用runtime中的类
-    //如果不以compileOnly方式依赖，会导致其他Transform或者Proguard找不到这些类
-    compileOnly "com.tencent.shadow.core${group_suffix}:runtime:$shadow_version"
-
     kapt "androidx.room:room-compiler:$rootProject.roomVersion"
     kapt "com.github.bumptech.glide:compiler:$rootProject.glideVersion"
 
@@ -77,7 +82,8 @@ dependencies {
     androidTestImplementation "androidx.work:work-testing:$rootProject.workVersion"
     androidTestImplementation "com.google.truth:truth:$rootProject.truthVersion"
     testImplementation "junit:junit:$rootProject.junitVersion"
+
+    //Shadow Transform后业务代码会有一部分实际引用runtime中的类
+    //如果不以compileOnly方式依赖，会导致其他Transform或者Proguard找不到这些类
+    pluginCompileOnly "com.tencent.shadow.core${group_suffix}:runtime:$shadow_version"
 }
-
-
-apply  from: '../shadow.gradle' // shadow plugin 使用需在 android{} 闭包之后
