@@ -1,10 +1,11 @@
 apply plugin: 'com.android.application'
+
+apply from: '../shadow.gradle' // 配置 plugin flavor 后 shadow plugin 使用需在 android{} 闭包 和 kotlin-android 插件之前
+
 apply plugin: 'kotlin-android'
 
-apply  from: '../shadow.gradle' // 配置 plugin flavor 后 shadow plugin 使用需在 android{} 闭包之前
-
 android {
-    compileSdk 30
+    compileSdk 31
     buildToolsVersion "30.0.3"
 
     defaultConfig {

@@ -74,8 +74,9 @@ def setShadowPluginApk = { pluginApksOwner, pluginProject, isDebug ->
         println "[project: ${pluginProject.name}] 开始默认编译的配置 -----------> buildTaskName == assemble${flavorSuffix}"
 
         pluginApksOwner.buildTask = "${pluginProject.path}:assemble${flavorSuffix}"
-        pluginApksOwner.apkName = "${pluginProject.name}-${buildType}.apk"
-        pluginApksOwner.apkPath = "${moduleRelativePathForRootProject}/build/outputs/apk/${buildType}/${pluginApksOwner.apkName}"
+        // pluginApksOwner.apkName = "${pluginProject.name}-${buildType}.apk"
+        def apkName = "${pluginProject.name}-${buildType}.apk"
+        pluginApksOwner.apkPath = "${moduleRelativePathForRootProject}/build/outputs/apk/${buildType}/${apkName}"
     } else if (pluginSelectFlavor != selectVariant) {
         // 有自定义 flavor 时的配置
         def firstChar = pluginSelectFlavor.charAt(0)
@@ -85,8 +86,9 @@ def setShadowPluginApk = { pluginApksOwner, pluginProject, isDebug ->
         println "[project: ${pluginProject.name}] 开始自定义 flavor 的配置 -----------> buildTaskName == assemble${buildTaskName}"
 
         pluginApksOwner.buildTask = "${pluginProject.path}:assemble${buildTaskName}"
-        pluginApksOwner.apkName = "${pluginProject.name}-${pluginSelectFlavor}-${buildType}.apk"
-        pluginApksOwner.apkPath = "${moduleRelativePathForRootProject}/build/outputs/apk/${pluginSelectFlavor}/${buildType}/${pluginApksOwner.apkName}"
+        // pluginApksOwner.apkName = "${pluginProject.name}-${pluginSelectFlavor}-${buildType}.apk"
+        def apkName = "${pluginProject.name}-${pluginSelectFlavor}-${buildType}.apk"
+        pluginApksOwner.apkPath = "${moduleRelativePathForRootProject}/build/outputs/apk/${pluginSelectFlavor}/${buildType}/${apkName}"
     }
 }
 

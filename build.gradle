@@ -3,8 +3,8 @@ buildscript {
 
     ext {
         kotlin_version = '1.5.21'
-        shadow_version = 'local-89a753c5-SNAPSHOT'
-//        shadow_version = '2.2.1'
+//        shadow_version = 'local-89a753c5-SNAPSHOT'
+        shadow_version = '2.3.0'
 
         HOST_APP_APPLICATION_ID = 'com.hl.baseproject.demo'
         shadow_repository = 'E:\\repository'
@@ -18,45 +18,17 @@ buildscript {
     }
 
     ext {
-        // Sdk and tools
-        compileSdkVersion = 28
-        minSdkVersion = 21
-        targetSdkVersion = 28
-
-        // App dependencies
-        appCompatVersion = '1.1.0-beta01'
-        constraintLayoutVersion = '2.0.0-beta4'
-        coreTestingVersion = '2.0.0'
-        coroutinesVersion = "1.3.0-M2"
-        espressoVersion = '3.1.1'
-        fragmentVersion = '1.1.0-alpha09'
-        glideVersion = '4.9.0'
-        gradleVersion = '3.5.1'
-        gsonVersion = '2.8.2'
-        junitVersion = '4.12'
-        kotlinVersion = kotlin_version
-        ktlintVersion = '0.33.0'
-        ktxVersion = '1.0.2'
-        lifecycleVersion = '2.2.0-alpha01'
-        materialVersion = '1.1.0-alpha09'
-        navigationVersion = '2.3.5'
-        recyclerViewVersion = '1.1.0-alpha05'
-        roomVersion = '2.3.0'
-        runnerVersion = '1.0.1'
-        truthVersion = '0.42'
-        testExtJunit = '1.1.0'
-        uiAutomatorVersion = '2.2.0'
-        viewPagerVersion = '1.0.0'
-        workVersion = '2.1.0'
-    }
-
-    ext {
         myRepositories = {
-            if (!System.getenv().containsKey("DISABLE_TENCENT_MAVEN_MIRROR")) {
-                it.maven { url 'https://mirrors.tencent.com/nexus/repository/maven-public/' }
-            } else {
-                it.google()
-            }
+            // if (!System.getenv().containsKey("DISABLE_TENCENT_MAVEN_MIRROR")) {
+            //     it.maven { url 'https://mirrors.tencent.com/nexus/repository/maven-public/' }
+            // } else {
+            //     it.google()
+            // }
+
+            it.maven { url 'https://maven.aliyun.com/repository/public' } // central 和 jcenter 的聚合仓
+            it.maven { url 'https://maven.aliyun.com/repository/google' }
+            it.maven { url 'https://jitpack.io' }
+
             it.maven {
                 name = "GitHubPackages"
                 url "https://maven.pkg.github.com/tencent/shadow"
@@ -91,6 +63,7 @@ buildscript {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "com.tencent.shadow.core${group_suffix}:gradle-plugin:$shadow_version"
 
+        def navigationVersion = '2.3.5'
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$navigationVersion"
     }
 }
