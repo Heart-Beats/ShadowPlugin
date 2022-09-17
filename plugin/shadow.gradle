@@ -132,54 +132,58 @@ shadow {
         loaderApkProjectPath = 'my-loader'
         runtimeApkProjectPath = 'my-runtime'
 
+        // 压缩包的后缀名
         archiveSuffix = System.getenv("PluginSuffix") ?: ""
-        archivePrefix = 'plugin'
+        // 压缩包的前缀名 ， 生成名称规则为 "$prefix-${buildType.name}-$suffix.zip"
+        archivePrefix = "plugin-${project.name}"
         destinationDir = "${getRootProject().getBuildDir()}"
 
         version = 1
         compactVersion = [1, 2, 3]
         uuidNickName = "0.0.1" //packagePlugin 方法会生成 UUID, 此可认为 UUID 的版本号
+
+        // 可以指定 UUID, 默认随机生成
+        // uuid= UUID.nameUUIDFromBytes(HOST_APP_APPLICATION_ID.bytes).toString().toUpperCase()  // 根据宿主包名生成相应的 UUID
     }
 }
-
 
 // 打包任务执行完成后重命名
-project.afterEvaluate {
-
-    tasks.findAll {
-        it.name.endsWith('packageReleasePlugin') || it.name.endsWith('packageDebugPlugin')
-    }.forEach {
-        it.doLast { pluginTask ->
-            renamePluginZipName(pluginTask)
-        }
-    }
-}
-
-/**
- *  重命名插件的压缩包名
- */
-def renamePluginZipName(Task pluginTask) {
-    def pluginTaskName = pluginTask.name
-
-
-    def pluginDestinationDir = getRootProject().getBuildDir()
-
-    // 获取插件压缩包的名称
-    def pluginZipName = pluginTaskName.contains('Release') ? "plugin-release.zip" : "plugin-debug.zip"
-
-    def pluginZipFile = new File(pluginDestinationDir, pluginZipName)
-
-    if (pluginZipFile.exists()) {
-        def newPluginZipName = pluginZipName.replace('-', "-${pluginTask.project.name}-")
-        def newPluginZipFile = new File(pluginDestinationDir, newPluginZipName)
-        if (newPluginZipFile.exists()) {
-            newPluginZipFile.delete()
-        }
-
-        def renameSuccess = pluginZipFile.renameTo(newPluginZipFile)
-
-        println "重命名 ${pluginZipFile.name} ---------> ${newPluginZipName} ${renameSuccess ? '成功' : '失败'}"
-    } else {
-        println "未找到插件压缩包： ${pluginZipFile} "
-    }
-}
+//project.afterEvaluate {
+//
+//    tasks.findAll {
+//        it.name.endsWith('packageReleasePlugin') || it.name.endsWith('packageDebugPlugin')
+//    }.forEach {
+//        it.doLast { pluginTask ->
+//            renamePluginZipName(pluginTask)
+//        }
+//    }
+//}
+//
+///**
+// *  重命名插件的压缩包名
+// */
+//def renamePluginZipName(Task pluginTask) {
+//    def pluginTaskName = pluginTask.name
+//
+//
+//    def pluginDestinationDir = getRootProject().getBuildDir()
+//
+//    // 获取插件压缩包的名称
+//    def pluginZipName = pluginTaskName.contains('Release') ? "plugin-release.zip" : "plugin-debug.zip"
+//
+//    def pluginZipFile = new File(pluginDestinationDir, pluginZipName)
+//
+//    if (pluginZipFile.exists()) {
+//        def newPluginZipName = pluginZipName.replace('-', "-${pluginTask.project.name}-")
+//        def newPluginZipFile = new File(pluginDestinationDir, newPluginZipName)
+//        if (newPluginZipFile.exists()) {
+//            newPluginZipFile.delete()
+//        }
+//
+//        def renameSuccess = pluginZipFile.renameTo(newPluginZipFile)
+//
+//        println "重命名 ${pluginZipFile.name} ---------> ${newPluginZipName} ${renameSuccess ? '成功' : '失败'}"
+//    } else {
+//        println "未找到插件压缩包： ${pluginZipFile} "
+//    }
+//}
