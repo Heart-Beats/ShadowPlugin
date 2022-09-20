@@ -19,3 +19,6 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+#这是Shadow在编译期将AndroidManifest.xml中所需信息生成的Java类，没有被代码自然引用，所以需要手工keep住。
+-keep class com.tencent.shadow.core.manifest_parser.PluginManifest{*;}

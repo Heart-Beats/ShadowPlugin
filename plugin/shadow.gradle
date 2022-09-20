@@ -143,7 +143,7 @@ shadow {
         uuidNickName = "0.0.1" //packagePlugin 方法会生成 UUID, 此可认为 UUID 的版本号
 
         // 可以指定 UUID, 默认随机生成
-        // uuid= UUID.nameUUIDFromBytes(HOST_APP_APPLICATION_ID.bytes).toString().toUpperCase()  // 根据宿主包名生成相应的 UUID
+         uuid= UUID.nameUUIDFromBytes(HOST_APP_APPLICATION_ID.bytes).toString().toUpperCase()  // 根据宿主包名生成相应的 UUID
     }
 }
 

@@ -32,3 +32,6 @@
 -keepclassmembernames class kotlinx.** {
     volatile <fields>;
 }
+
+#这是Shadow在编译期将AndroidManifest.xml中所需信息生成的Java类，没有被代码自然引用，所以需要手工keep住。
+-keep class com.tencent.shadow.core.manifest_parser.PluginManifest{*;}
