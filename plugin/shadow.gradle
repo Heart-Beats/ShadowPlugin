@@ -6,7 +6,7 @@ apply plugin: 'com.tencent.shadow.plugin'
 
 //apply plugin: 'plugin.test'
 
-static String getSelectVariant(Project project) {
+static String getSelectVariant(Project project, boolean isDebug) {
     def rootDirPath = project.rootDir.path
     def projectDirPath = project.projectDir.path
     def moduleRelativePathForRootProject = project.rootProject.relativePath(projectDirPath)
@@ -30,7 +30,10 @@ static String getSelectVariant(Project project) {
             }
         }.@value
     } else {
-        println "项目初始化，当前配置阶段无法获取选择的 Variant"
+        println "未能从配置文件中获取选择的 Variant， 使用默认的 Variant"
+
+        def buildType = isDebug ? "Debug" : "Release"
+        selectVariant = "plugin${buildType}"
     }
 
     println "[project: ${project.name}] 选择的 Variant --------- $selectVariant"
@@ -40,7 +43,7 @@ static String getSelectVariant(Project project) {
 def setShadowPluginApk = { pluginApksOwner, pluginProject, isDebug ->
     println "[project: ${pluginProject.name}],    isDebug == ${isDebug}"
 
-    def selectVariant = getSelectVariant(pluginProject)
+    def selectVariant = getSelectVariant(pluginProject, isDebug)
 
     // 未找到选择的 Variant，停止后续操作
     if (!selectVariant) {
