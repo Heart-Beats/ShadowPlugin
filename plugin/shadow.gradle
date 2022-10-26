@@ -40,10 +40,18 @@ static String getSelectVariant(Project project, boolean isDebug) {
     return selectVariant
 }
 
+def getPluginVariant(Project project, boolean isDebug) {
+    def buildType = isDebug ? "Debug" : "Release"
+    def selectVariant = "plugin${buildType}"
+
+    println "[project: ${project.name}] 选择的 Variant --------- $selectVariant"
+    return selectVariant
+}
+
 def setShadowPluginApk = { pluginApksOwner, pluginProject, isDebug ->
     println "[project: ${pluginProject.name}],    isDebug == ${isDebug}"
 
-    def selectVariant = getSelectVariant(pluginProject, isDebug)
+    def selectVariant = getPluginVariant(pluginProject, isDebug)
 
     // 未找到选择的 Variant，停止后续操作
     if (!selectVariant) {
