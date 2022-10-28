@@ -1,7 +1,7 @@
 apply plugin: 'kotlin'
 
 buildscript {
-    ext.kotlin_version = '1.4.31'
+    ext.kotlin_version = '1.6.21'
 
     repositories {
         google()
