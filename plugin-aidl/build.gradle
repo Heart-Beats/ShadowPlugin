@@ -5,8 +5,8 @@ plugins {
 }
 
 android {
-    compileSdkVersion 30
-    buildToolsVersion "30.0.3"
+    namespace 'com.hl.pluginaidl'
+    compileSdk libs.versions.compileSdk.get().toInteger()
 
     defaultConfig {
         minSdkVersion 16

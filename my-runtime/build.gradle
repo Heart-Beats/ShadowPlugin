@@ -4,7 +4,8 @@ plugins {
 }
 
 android {
-    compileSdkVersion 32
+    namespace 'com.hl.my_runtime'
+    compileSdk libs.versions.compileSdk.get().toInteger()
 
     defaultConfig {
         applicationId "com.hl.my_runtime"
@@ -35,5 +36,5 @@ android {
 }
 
 dependencies {
-    implementation "com.tencent.shadow.core${group_suffix}:activity-container:$shadow_version"
+    implementation "com.tencent.shadow.core:activity-container:$shadow_version"
 }

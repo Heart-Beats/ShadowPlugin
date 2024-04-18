@@ -16,26 +16,27 @@
 
 package com.google.samples.apps.sunflower
 
-import android.view.MenuItem
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil.setContentView
-import com.google.samples.apps.sunflower.databinding.ActivityGardenBinding
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
+import com.google.samples.apps.sunflower.compose.SunflowerApp
+import com.google.samples.apps.sunflower.ui.SunflowerTheme
+import dagger.hilt.android.AndroidEntryPoint
 
-class GardenActivity : AppCompatActivity() {
+@AndroidEntryPoint
+class GardenActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView<ActivityGardenBinding>(this, R.layout.activity_garden)
-    }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val id = item?.itemId
-        return if (id == android.R.id.home) {
-            onBackPressed()
-            true
-        } else {
-            super.onOptionsItemSelected(item)
+        // Displaying edge-to-edge
+        enableEdgeToEdge()
+        setContent {
+            SunflowerTheme {
+                SunflowerApp()
+            }
         }
+        
     }
 }

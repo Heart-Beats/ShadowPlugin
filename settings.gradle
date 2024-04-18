@@ -1,5 +1,36 @@
+pluginManagement {
+    repositories {
+        maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }
+        gradlePluginPortal()
+        google()
+        mavenCentral()
+    }
+}
+
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        mavenLocal()
+        maven { url 'https://maven.aliyun.com/repository/public' } // central 和 jcenter 的聚合仓
+        maven { url 'https://maven.aliyun.com/repository/google' }
+        maven { url 'https://jitpack.io' }
+        google()  // 阿里云对于有些库会有丢失，加入进行兜底
+        mavenCentral()
+
+        maven {
+            name "GitHubPackages"
+            url "https://maven.pkg.github.com/Heart-Beats/shadow"
+            credentials {
+                username = "Heart-Beats"
+                password = GITHUB_PACKAGES_WRITE_TOKEN
+            }
+        }
+    }
+}
+
+
 rootProject.name = "MyPlugin"
-include ':app'
+
 include ':my-loader'
 include ':my-runtime'
 

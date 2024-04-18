@@ -1,80 +1,45 @@
 buildscript {
-    def needCustom = false
-
     ext {
-        kotlin_version = '1.6.21'
-//        shadow_version = 'local-89a753c5-SNAPSHOT'
-        shadow_version = '2.3.0'
+        kotlin_version = '1.9.0'
+
+        shadow_version = 'local-4880701c-SNAPSHOT'
+
+        // shadow_version = '2.3.0'
 
         HOST_APP_APPLICATION_ID = 'com.hl.baseproject.demo'
-        shadow_repository = 'E:\\repository'
-
-        //定义共享属性
-         if(needCustom){
-             group_suffix = '.test'
-        }else{
-             group_suffix = ''
-         }
     }
 
-    ext {
-        myRepositories = {
-            // if (!System.getenv().containsKey("DISABLE_TENCENT_MAVEN_MIRROR")) {
-            //     it.maven { url 'https://mirrors.tencent.com/nexus/repository/maven-public/' }
-            // } else {
-            //     it.google()
-            // }
-
-            it.maven { url 'https://maven.aliyun.com/repository/public' } // central 和 jcenter 的聚合仓
-            it.maven { url 'https://maven.aliyun.com/repository/google' }
-            it.maven { url 'https://jitpack.io' }
-
-            it.maven {
-                name = "GitHubPackages"
-                url "https://maven.pkg.github.com/tencent/shadow"
-                //一个只读账号兼容Github Packages暂时不支持匿名下载
-                //https://github.community/t/download-from-github-package-registry-without-authentication/14407
-                credentials {
-                    username = 'readonlypat'
-                    password = '\u0067hp_s3VOOZnLf1bTyvHWblPfaessrVYyEU4JdNbs'
-                }
-            }
-            it.mavenLocal()
-
-            if (file(shadow_repository).exists()) {
-                it.maven { url = uri(shadow_repository) }
-            }
-
-            it.maven {
-                url "https://repo.rdc.aliyun.com/repository/39749-release-oGtrdD"
-                credentials {
-                    username 'hl6idx'
-                    password 'Ukdr3Dsn2f'
-                }
+    repositories {
+        google()
+        mavenCentral()
+        maven {
+            name "GitHubPackages"
+            url "https://maven.pkg.github.com/Heart-Beats/shadow"
+            credentials {
+                username = "Heart-Beats"
+                password = GITHUB_PACKAGES_READ_TOKEN
             }
         }
     }
 
-    repositories {
-        myRepositories(owner)
-    }
     dependencies {
         // 目前 shadow 打包插件在 AGP 7.2.1  下有问题，详见  https://github.com/Tencent/Shadow/issues/1047
-        classpath 'com.android.tools.build:gradle:7.0.0'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath "com.tencent.shadow.core${group_suffix}:gradle-plugin:$shadow_version"
+        classpath "com.tencent.shadow.core:gradle-plugin:$shadow_version"
 
-        def navigationVersion = '2.5.3'
-        classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$navigationVersion"
+//        classpath 'com.android.tools.build:gradle:7.0.0'
+//        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+//
+//        def navigationVersion = '2.5.3'
+//        classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$navigationVersion"
     }
 }
 
-allprojects {
-    repositories {
-        myRepositories(owner)
-    }
-}
-
-task clean(type: Delete) {
-    delete rootProject.buildDir
+plugins {
+    alias(libs.plugins.android.application) apply false
+    alias(libs.plugins.kotlin.android) apply false
+    alias(libs.plugins.hilt) apply false
+    alias(libs.plugins.spotless)
+    alias(libs.plugins.ksp) apply false
+    alias(libs.plugins.android.test) apply false
+    alias(libs.plugins.gradle.versions)
 }

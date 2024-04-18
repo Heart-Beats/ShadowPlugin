@@ -4,7 +4,8 @@ plugins {
 }
 
 android {
-    compileSdkVersion 32
+    namespace 'com.hl.my_loader'
+    compileSdk libs.versions.compileSdk.get().toInteger()
 
     defaultConfig {
         applicationId "com.hl.my_loader"
@@ -40,11 +41,11 @@ android {
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
-    implementation "com.tencent.shadow.dynamic${group_suffix}:loader-impl:$shadow_version"
+    implementation "com.tencent.shadow.dynamic:loader-impl:$shadow_version"
 
-//    compileOnly "com.tencent.shadow.core${group_suffix}:runtime:$shadow_version"
-    compileOnly "com.tencent.shadow.core${group_suffix}:activity-container:$shadow_version"
-    compileOnly "com.tencent.shadow.core${group_suffix}:common:$shadow_version"
+//    compileOnly "com.tencent.shadow.core:runtime:$shadow_version"
+    compileOnly "com.tencent.shadow.core:activity-container:$shadow_version"
+    compileOnly "com.tencent.shadow.core:common:$shadow_version"
     //下面这行依赖是为了防止在proguard的时候找不到LoaderFactory接口
-    compileOnly "com.tencent.shadow.dynamic${group_suffix}:host:$shadow_version"
+    compileOnly "com.tencent.shadow.dynamic:host:$shadow_version"
 }

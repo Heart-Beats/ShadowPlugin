@@ -5,8 +5,9 @@ apply from: '../shadow.gradle' // 配置 plugin flavor 后 shadow plugin 使用�
 apply plugin: 'kotlin-android'
 
 android {
-    compileSdk 32
+    compileSdk libs.versions.compileSdk.get().toInteger()
 
+    namespace 'com.hl.myplugin'
     defaultConfig {
         applicationId 'com.hl.test'
         minSdkVersion 23
@@ -64,9 +65,7 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
-    implementation 'com.tsinglink.android.library:appupdate:2.0.19.0726'
-
     //Shadow Transform后业务代码会有一部分实际引用runtime中的类
     //如果不以compileOnly方式依赖，会导致其他Transform或者Proguard找不到这些类
-    pluginCompileOnly "com.tencent.shadow.core${group_suffix}:runtime:$shadow_version"
+    pluginCompileOnly "com.tencent.shadow.core:runtime:$shadow_version"
 }

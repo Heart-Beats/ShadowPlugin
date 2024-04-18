@@ -4,8 +4,6 @@
  **/
 apply plugin: 'com.tencent.shadow.plugin'
 
-//apply plugin: 'plugin.test'
-
 static String getSelectVariant(Project project, boolean isDebug) {
     def rootDirPath = project.rootDir.path
     def projectDirPath = project.projectDir.path
