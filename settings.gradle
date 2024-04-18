@@ -22,7 +22,7 @@ dependencyResolutionManagement {
             url "https://maven.pkg.github.com/Heart-Beats/shadow"
             credentials {
                 username = "Heart-Beats"
-                password = GITHUB_PACKAGES_WRITE_TOKEN
+                password = GITHUB_PACKAGES_READ_TOKEN
             }
         }
     }

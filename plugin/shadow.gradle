@@ -4,6 +4,26 @@
  **/
 apply plugin: 'com.tencent.shadow.plugin'
 
+android{
+    // 将插件 applicationId 设置为和宿主相同
+    productFlavors {
+        plugin {
+            applicationId HOST_APP_APPLICATION_ID
+        }
+    }
+
+    // 将插件的资源ID分区改为和宿主0x7F不同的值
+    aaptOptions {
+        additionalParameters "--package-id", "0x7E", "--allow-reserved-package-id"
+    }
+}
+
+dependencies {
+    //Shadow Transform后业务代码会有一部分实际引用runtime中的类
+    //如果不以compileOnly方式依赖，会导致其他Transform或者Proguard找不到这些类
+    pluginCompileOnly("com.tencent.shadow.core:runtime:$shadow_version")
+}
+
 static String getSelectVariant(Project project, boolean isDebug) {
     def rootDirPath = project.rootDir.path
     def projectDirPath = project.projectDir.path
@@ -113,11 +133,11 @@ shadow {
                         //hostWhiteList = ["com.tencent.shadow.sample.host.lib"]
                         //hostWhiteList = ["com.example.zhanglei.myapplication.fragments"]
                     }
-
-                    pluginApk2 {
-                        setShadowPluginApk(owner, project(':sunflower'), true)
-                        //hostWhiteList = ["com.tencent.shadow.sample.host.lib"]
-                    }
+//
+//                    pluginApk2 {
+//                        setShadowPluginApk(owner, project(':sunflower'), true)
+//                        //hostWhiteList = ["com.tencent.shadow.sample.host.lib"]
+//                    }
                 }
             }
 
@@ -129,11 +149,11 @@ shadow {
                         setShadowPluginApk(owner, project(':test'), false)
                         //hostWhiteList = ["com.tencent.shadow.sample.host.lib"]
                     }
-
-                    pluginApk2 {
-                        setShadowPluginApk(owner, project(':sunflower'), false)
-                        //hostWhiteList = ["com.tencent.shadow.sample.host.lib"]
-                    }
+//
+//                    pluginApk2 {
+//                        setShadowPluginApk(owner, project(':sunflower'), false)
+//                        //hostWhiteList = ["com.tencent.shadow.sample.host.lib"]
+//                    }
                 }
             }
         }

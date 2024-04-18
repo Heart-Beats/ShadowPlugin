@@ -38,17 +38,17 @@ android {
         viewBinding true
     }
 
-    // 将插件 applicationId 设置为和宿主相同
-    productFlavors {
-        plugin {
-            applicationId HOST_APP_APPLICATION_ID
-        }
-    }
-
-    // 将插件的资源ID分区改为和宿主0x7F不同的值
-    aaptOptions {
-        additionalParameters "--package-id", "0x7E", "--allow-reserved-package-id"
-    }
+//    // 将插件 applicationId 设置为和宿主相同
+//    productFlavors {
+//        plugin {
+//            applicationId HOST_APP_APPLICATION_ID
+//        }
+//    }
+//
+//    // 将插件的资源ID分区改为和宿主0x7F不同的值
+//    aaptOptions {
+//        additionalParameters "--package-id", "0x7E", "--allow-reserved-package-id"
+//    }
 }
 
 dependencies {
@@ -67,5 +67,5 @@ dependencies {
 
     //Shadow Transform后业务代码会有一部分实际引用runtime中的类
     //如果不以compileOnly方式依赖，会导致其他Transform或者Proguard找不到这些类
-    pluginCompileOnly "com.tencent.shadow.core:runtime:$shadow_version"
+//    pluginCompileOnly "com.tencent.shadow.core:runtime:$shadow_version"
 }

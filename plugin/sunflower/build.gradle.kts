@@ -14,10 +14,14 @@
  * limitations under the License.
  */
 
+// 先应用 shadow.gradle 脚本
+// apply(from = "../shadow.gradle")
+
 plugins {
   alias(libs.plugins.android.application)
 
-  // apply from: '../shadow.gradle' // 配置 plugin flavor 后 shadow plugin 使用需在 android{} 闭包 和 kotlin-android 插件之前
+  // plugins 闭包内单独引入 shadow 插件
+  // id("com.tencent.shadow.plugin") // 配置 plugin flavor 后 shadow plugin 使用需在 android{} 闭包 和 kotlin-android 插件之前
 
   alias(libs.plugins.kotlin.android)
   alias(libs.plugins.ksp)
@@ -172,18 +176,17 @@ fun getUnsplashAccess(): String? {
   return project.findProperty("unsplash_access_key") as? String
 }
 
-
 // android{
 //   // 将插件 applicationId 设置为和宿主相同
 //   productFlavors {
-//     plugin {
-//       applicationId HOST_APP_APPLICATION_ID
+//     this.getByName("plugin"){
+//       applicationId = HOST_APP_APPLICATION_ID
 //     }
 //   }
 //
 //   // 将插件的资源ID分区改为和宿主0x7F不同的值
 //   aaptOptions {
-//     additionalParameters "--package-id", "0x7E", "--allow-reserved-package-id"
+//     this.additionalParameters("--package-id", "0x7E", "--allow-reserved-package-id")
 //   }
 // }
 //
