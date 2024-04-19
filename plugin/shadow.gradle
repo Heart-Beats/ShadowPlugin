@@ -24,39 +24,9 @@ dependencies {
     pluginCompileOnly("com.tencent.shadow.core:runtime:$shadow_version")
 }
 
-static String getSelectVariant(Project project, boolean isDebug) {
-    def rootDirPath = project.rootDir.path
-    def projectDirPath = project.projectDir.path
-    def moduleRelativePathForRootProject = project.rootProject.relativePath(projectDirPath)
-    def pathSeparator = File.separator
 
-    /*
-    * 构建 project 相关的配置路径：
-    * 如 {rootProjectPath}\.idea\modules\{project 在 rootProject 中的相对路径}\{rootProjectName}.{project.name}.iml
-    */
-    def parseModuleXmlPath = "${rootDirPath}${pathSeparator}.idea${pathSeparator}modules" +
-            "${pathSeparator}${moduleRelativePathForRootProject}${pathSeparator}${project.rootProject.name}.${project.name}.iml"
+/*********************************************************************************************************/
 
-    def selectVariant = ""
-    if (new File(parseModuleXmlPath).exists()) {
-        def module = new XmlSlurper().parse(parseModuleXmlPath)
-
-        // 解析 project 配置相关的 XMl，找到对应的属性（SELECTED_BUILD_VARIANT）
-        selectVariant = module.component.facet.configuration.option.find { node ->
-            if (node.@name == "SELECTED_BUILD_VARIANT") {
-                return true
-            }
-        }.@value
-    } else {
-        println "未能从配置文件中获取选择的 Variant， 使用默认的 Variant"
-
-        def buildType = isDebug ? "Debug" : "Release"
-        selectVariant = "plugin${buildType}"
-    }
-
-    println "[project: ${project.name}] 选择的 Variant --------- $selectVariant"
-    return selectVariant
-}
 
 def getPluginVariant(Project project, boolean isDebug) {
     def buildType = isDebug ? "Debug" : "Release"
@@ -133,11 +103,11 @@ shadow {
                         //hostWhiteList = ["com.tencent.shadow.sample.host.lib"]
                         //hostWhiteList = ["com.example.zhanglei.myapplication.fragments"]
                     }
-//
-//                    pluginApk2 {
-//                        setShadowPluginApk(owner, project(':sunflower'), true)
-//                        //hostWhiteList = ["com.tencent.shadow.sample.host.lib"]
-//                    }
+
+                    pluginApk2 {
+                        setShadowPluginApk(owner, project(':sunflower'), true)
+                        //hostWhiteList = ["com.tencent.shadow.sample.host.lib"]
+                    }
                 }
             }
 
@@ -149,11 +119,11 @@ shadow {
                         setShadowPluginApk(owner, project(':test'), false)
                         //hostWhiteList = ["com.tencent.shadow.sample.host.lib"]
                     }
-//
-//                    pluginApk2 {
-//                        setShadowPluginApk(owner, project(':sunflower'), false)
-//                        //hostWhiteList = ["com.tencent.shadow.sample.host.lib"]
-//                    }
+
+                    pluginApk2 {
+                        setShadowPluginApk(owner, project(':sunflower'), false)
+                        //hostWhiteList = ["com.tencent.shadow.sample.host.lib"]
+                    }
                 }
             }
         }
