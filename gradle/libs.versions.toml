@@ -16,7 +16,7 @@
 [versions]
 accessibilityTestFramework = "4.1.0"
 activityCompose = "1.8.2"
-androidGradlePlugin = "7.4.2"
+androidGradlePlugin = "8.3.0"
 benchmark = "1.2.3"
 # @keep
 compileSdk = "34"
@@ -36,8 +36,8 @@ guava = "33.0.0-jre"
 hilt = "2.50"
 hiltNavigationCompose = "1.1.0"
 junit = "4.13.2"
-kotlin = "1.9.0"
-ksp = "1.9.0-1.0.13"
+kotlin = "1.9.22"
+ksp = "1.9.22-1.0.17"
 # @keep
 ktlint = "0.40.0"
 ktx = "1.7.0"
@@ -56,7 +56,7 @@ room = "2.6.1"
 spotless = "6.25.0"
 systemuicontroller = "0.34.0"
 # @keep
-targetSdk = "34"
+targetSdk = "30"
 testExtJunit = "1.1.5"
 uiAutomator = "2.2.0"
 version-catalog-update = "0.8.4"

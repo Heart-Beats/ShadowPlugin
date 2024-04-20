@@ -30,14 +30,13 @@ plugins {
 
 android {
   compileSdk = libs.versions.compileSdk.get().toInt()
-  buildFeatures {
-    dataBinding = true
-  }
+
+  namespace = "com.google.samples.apps.sunflower"
+
   defaultConfig {
     applicationId = "com.google.samples.apps.sunflower"
     minSdk = libs.versions.minSdk.get().toInt()
     targetSdk = libs.versions.targetSdk.get().toInt()
-    testInstrumentationRunner = "com.google.samples.apps.sunflower.utilities.MainTestRunner"
     versionCode = 1
     versionName = "0.1.6"
     vectorDrawables.useSupportLibrary = true
@@ -54,15 +53,6 @@ android {
     release {
       isMinifyEnabled = true
       proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
-    }
-    create("benchmark") {
-      initWith(getByName("release"))
-      signingConfig = signingConfigs.getByName("debug")
-      isDebuggable = false
-      proguardFiles(
-        getDefaultProguardFile("proguard-android-optimize.txt"),
-        "proguard-rules-benchmark.pro"
-      )
     }
   }
   compileOptions {
@@ -92,19 +82,6 @@ android {
     resources.excludes += "/META-INF/AL2.0"
     resources.excludes += "/META-INF/LGPL2.1"
   }
-
-  testOptions {
-    managedDevices {
-      devices {
-        maybeCreate<com.android.build.api.dsl.ManagedVirtualDevice>("pixel2api27").apply {
-          device = "Pixel 2"
-          apiLevel = 27
-          systemImageSource = "aosp"
-        }
-      }
-    }
-  }
-  namespace = "com.google.samples.apps.sunflower"
 }
 
 androidComponents {
@@ -134,7 +111,7 @@ dependencies {
   implementation(libs.kotlinx.coroutines.core)
   implementation(libs.hilt.android)
   implementation(libs.hilt.navigation.compose)
-  implementation(libs.androidx.profileinstaller)
+  // implementation(libs.androidx.profileinstaller)
 
   // Compose
   implementation(platform(libs.androidx.compose.bom))
@@ -152,24 +129,6 @@ dependencies {
   implementation(libs.glide)
   implementation(libs.accompanist.systemuicontroller)
   debugImplementation(libs.androidx.compose.ui.tooling)
-
-  // Testing dependencies
-  debugImplementation(libs.androidx.monitor)
-  kspAndroidTest(libs.hilt.android.compiler)
-  androidTestImplementation(platform(libs.androidx.compose.bom))
-  androidTestImplementation(libs.androidx.arch.core.testing)
-  androidTestImplementation(libs.androidx.espresso.contrib)
-  androidTestImplementation(libs.androidx.espresso.core)
-  androidTestImplementation(libs.androidx.espresso.intents)
-  androidTestImplementation(libs.androidx.test.ext.junit)
-  androidTestImplementation(libs.androidx.test.uiautomator)
-  androidTestImplementation(libs.androidx.work.testing)
-  androidTestImplementation(libs.androidx.compose.ui.test.junit4)
-  androidTestImplementation(libs.guava)
-  androidTestImplementation(libs.hilt.android.testing)
-  androidTestImplementation(libs.accessibility.test.framework)
-  androidTestImplementation(libs.kotlinx.coroutines.test)
-  testImplementation(libs.junit)
 }
 
 fun getUnsplashAccess(): String? {

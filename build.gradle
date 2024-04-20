@@ -1,8 +1,8 @@
 buildscript {
     ext {
-        kotlin_version = '1.9.0'
+        kotlin_version = libs.versions.kotlin.get()
 
-        shadow_version = 'local-4880701c-SNAPSHOT'
+        shadow_version = 'local-b0013404-SNAPSHOT'
 
         // shadow_version = '2.3.0'
 
@@ -25,12 +25,6 @@ buildscript {
     dependencies {
         // 目前 shadow 打包插件在 AGP 7.2.1  下有问题，详见  https://github.com/Tencent/Shadow/issues/1047
         classpath "com.tencent.shadow.core:gradle-plugin:$shadow_version"
-
-//        classpath 'com.android.tools.build:gradle:7.0.0'
-//        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-//
-//        def navigationVersion = '2.5.3'
-//        classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$navigationVersion"
     }
 }
 
@@ -38,8 +32,6 @@ plugins {
     alias(libs.plugins.android.application) apply false
     alias(libs.plugins.kotlin.android) apply false
     alias(libs.plugins.hilt) apply false
-    alias(libs.plugins.spotless)
     alias(libs.plugins.ksp) apply false
-    alias(libs.plugins.android.test) apply false
     alias(libs.plugins.gradle.versions)
 }
