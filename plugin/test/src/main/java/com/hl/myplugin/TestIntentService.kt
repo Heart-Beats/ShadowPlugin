@@ -1,14 +1,12 @@
 package com.hl.myplugin
 
 import android.app.IntentService
-import android.content.Context
 import android.content.Intent
-import android.os.Bundle
 import android.os.ResultReceiver
+import androidx.core.os.bundleOf
 
 
-private const val ACTION_FOO = "com.hl.myplugin.action.FOO"
-private const val ACTION_BAZ = "com.hl.myplugin.action.BAZ"
+private const val ACTION_FOO = "com.hl.myplugin.action.TEST"
 
 private const val EXTRA_PARAM1 = "com.hl.myplugin.extra.PARAM1"
 private const val EXTRA_PARAM2 = "com.hl.myplugin.extra.PARAM2"
@@ -37,11 +35,6 @@ class TestIntentService : IntentService("TestIntentService") {
 				val param2: ResultReceiver? = intent.getParcelableExtra(EXTRA_PARAM2)
 				handleActionFoo(param1, param2)
 			}
-			ACTION_BAZ -> {
-				val param1 = intent.getStringExtra(EXTRA_PARAM1)
-				val param2 = intent.getStringExtra(EXTRA_PARAM2)
-				handleActionBaz(param1, param2)
-			}
 		}
 	}
 
@@ -49,37 +42,6 @@ class TestIntentService : IntentService("TestIntentService") {
 	private fun handleActionFoo(param1: String?, resultReceiver: ResultReceiver?) {
 		println("handleActionFoo------------> param1 = [${param1}], param2 = [${resultReceiver}]")
 
-		resultReceiver?.send(0, Bundle().apply {
-			this.putString(param1, param1)
-		})
-	}
-
-
-	private fun handleActionBaz(param1: String?, param2: String?) {
-		println("handleActionBaz-------------> param1 = [${param1}], param2 = [${param2}]")
-	}
-
-	companion object {
-
-		@JvmStatic
-		fun startActionFoo(context: Context, param1: String, param2: String) {
-			val intent = Intent(context, TestIntentService::class.java).apply {
-				action = ACTION_FOO
-				putExtra(EXTRA_PARAM1, param1)
-				putExtra(EXTRA_PARAM2, param2)
-			}
-			context.startService(intent)
-		}
-
-
-		@JvmStatic
-		fun startActionBaz(context: Context, param1: String, param2: String) {
-			val intent = Intent(context, TestIntentService::class.java).apply {
-				action = ACTION_BAZ
-				putExtra(EXTRA_PARAM1, param1)
-				putExtra(EXTRA_PARAM2, param2)
-			}
-			context.startService(intent)
-		}
+		resultReceiver?.send(0, bundleOf(EXTRA_PARAM1 to "我是 TestIntentService 回传的数据：" + param1))
 	}
 }

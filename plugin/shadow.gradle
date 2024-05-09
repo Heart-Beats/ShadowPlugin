@@ -1,10 +1,9 @@
 /**
- * 这个在每个插件中必须应用，否则启动组件时不能被 shadow 识别，且必须在 android{} 闭包之后，
- *   否则插件获取的 compileSdkVersion 会为空
+ * 这个在每个插件中必须应用，否则启动组件时不能被 shadow 识别
  **/
 apply plugin: 'com.tencent.shadow.plugin'
 
-android{
+android {
     // 将插件 applicationId 设置为和宿主相同
     productFlavors {
         plugin {
@@ -91,6 +90,10 @@ def setShadowPluginApk = { pluginApksOwner, pluginProject, isDebug ->
     }
 }
 
+
+/**
+ * 必须在 android{} 闭包之后，否则插件获取的 compileSdkVersion 会为空
+ **/
 shadow {
     packagePlugin {
         pluginTypes {
@@ -100,12 +103,13 @@ shadow {
                 pluginApks {
                     pluginApk1 {
                         setShadowPluginApk(owner, project(':test'), true)
+                        hostWhiteList = ["com.hl.shadow.dynamic.impl"]
                         //hostWhiteList = ["com.tencent.shadow.sample.host.lib"]
-                        //hostWhiteList = ["com.example.zhanglei.myapplication.fragments"]
                     }
 
                     pluginApk2 {
                         setShadowPluginApk(owner, project(':sunflower'), true)
+                        hostWhiteList = ["com.hl.shadow.dynamic.impl"]
                         //hostWhiteList = ["com.tencent.shadow.sample.host.lib"]
                     }
                 }
@@ -117,11 +121,13 @@ shadow {
                 pluginApks {
                     pluginApk1 {
                         setShadowPluginApk(owner, project(':test'), false)
+                        hostWhiteList = ["com.hl.shadow.dynamic.impl"]
                         //hostWhiteList = ["com.tencent.shadow.sample.host.lib"]
                     }
 
                     pluginApk2 {
                         setShadowPluginApk(owner, project(':sunflower'), false)
+                        hostWhiteList = ["com.hl.shadow.dynamic.impl"]
                         //hostWhiteList = ["com.tencent.shadow.sample.host.lib"]
                     }
                 }
@@ -142,6 +148,6 @@ shadow {
         uuidNickName = "0.0.1" //packagePlugin 方法会生成 UUID, 此可认为 UUID 的版本号
 
         // 可以指定 UUID, 默认随机生成
-         uuid= UUID.nameUUIDFromBytes(HOST_APP_APPLICATION_ID.bytes).toString().toUpperCase()  // 根据宿主包名生成相应的 UUID
+        uuid = UUID.nameUUIDFromBytes(HOST_APP_APPLICATION_ID.bytes).toString().toUpperCase() // 根据宿主包名生成相应的 UUID
     }
 }

@@ -101,7 +101,7 @@ dependencies {
   implementation(libs.androidx.navigation.compose)
   implementation(libs.androidx.paging.compose)
   implementation(libs.androidx.room.ktx)
-  implementation(libs.androidx.work.runtime.ktx)
+  // implementation(libs.androidx.work.runtime.ktx)
   implementation(libs.material)
   implementation(libs.gson)
   implementation(libs.okhttp3.logging.interceptor)
@@ -111,7 +111,7 @@ dependencies {
   implementation(libs.kotlinx.coroutines.core)
   implementation(libs.hilt.android)
   implementation(libs.hilt.navigation.compose)
-  // implementation(libs.androidx.profileinstaller)
+  implementation(libs.androidx.profileinstaller)
 
   // Compose
   implementation(platform(libs.androidx.compose.bom))

@@ -17,18 +17,20 @@
 package com.google.samples.apps.sunflower.data
 
 import android.content.Context
+import android.util.Log
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
-import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.WorkManager
-import androidx.work.workDataOf
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import com.google.gson.stream.JsonReader
 import com.google.samples.apps.sunflower.utilities.DATABASE_NAME
 import com.google.samples.apps.sunflower.utilities.PLANT_DATA_FILENAME
-import com.google.samples.apps.sunflower.workers.SeedDatabaseWorker
-import com.google.samples.apps.sunflower.workers.SeedDatabaseWorker.Companion.KEY_FILENAME
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 /**
  * The Room database for this app
@@ -58,14 +60,37 @@ abstract class AppDatabase : RoomDatabase() {
                     object : RoomDatabase.Callback() {
                         override fun onCreate(db: SupportSQLiteDatabase) {
                             super.onCreate(db)
-                            val request = OneTimeWorkRequestBuilder<SeedDatabaseWorker>()
-                                    .setInputData(workDataOf(KEY_FILENAME to PLANT_DATA_FILENAME))
-                                    .build()
-                            WorkManager.getInstance(context).enqueue(request)
+                            // val request = OneTimeWorkRequestBuilder<SeedDatabaseWorker>()
+                            //         .setInputData(workDataOf(KEY_FILENAME to PLANT_DATA_FILENAME))
+                            //         .build()
+                            // WorkManager.getInstance(context).enqueue(request)
+
+                            CoroutineScope(Dispatchers.IO).launch {
+                                upsertAllPlant(context)
+                            }
                         }
                     }
                 )
                 .build()
+        }
+
+        private suspend fun upsertAllPlant(context: Context){
+            val filename = PLANT_DATA_FILENAME
+            if (filename != null) {
+                context.assets.open(filename).use { inputStream ->
+                    JsonReader(inputStream.reader()).use { jsonReader ->
+                        val plantType = object : TypeToken<List<Plant>>() {}.type
+                        val plantList: List<Plant> = Gson().fromJson(jsonReader, plantType)
+
+                        Log.e("upsertAllPlant", "更新植物数据大小 === ${plantList.size}")
+
+                        val database = AppDatabase.getInstance(context)
+                        database.plantDao().upsertAll(plantList)
+                    }
+                }
+            } else {
+                Log.e("upsertAllPlant", "Error seeding database - no valid filename")
+            }
         }
     }
 }
